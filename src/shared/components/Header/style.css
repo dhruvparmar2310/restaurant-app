@@ -1,0 +1,17 @@
+.header{
+    width: 100%;
+}
+
+.header h4{
+    font-weight: 800;
+    font-family: sans-serif;
+    text-align: center;
+    margin-top: 20px;
+    letter-spacing: -0.1mm;
+}
+
+.header p{
+    color: #161616;
+    font-size: 13px;
+    line-height: 15px;
+}
