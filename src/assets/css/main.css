@@ -1,0 +1,114 @@
+body{
+    background-color: #fbd92eae !important;
+}
+
+.App {
+    display: flex;
+    width: 25% !important;
+    height: 80vh;
+    margin-top: 60px;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    background-color: #fff;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* Very Small devices (up to 576px) */
+  @media (max-width: 576px) { 
+    .App {
+      display: flex;
+      width: 100% !important;
+      margin-top: 0;
+      height: 100vh;
+      justify-content: center;
+      align-content: center;
+      text-align: center;
+      background-color: #fff;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+   }
+  
+
+
+  /* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) { 
+  .App {
+    display: flex;
+    width: 60% !important;
+    height: 80vh;
+    margin-top: 60px;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    background-color: #fff;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+ }
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+  .App {
+    display: flex;
+    width: 45% !important;
+    height: 80vh;
+    margin-top: 60px;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    background-color: #fff;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+ }
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+  .App {
+    display: flex;
+    width: 35% !important;
+    height: 80vh;
+    margin-top: 60px;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    background-color: #fff;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+ } 
+
+/* X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+  .App {
+    display: flex;
+    width: 30% !important;
+    height: 80vh;
+    margin-top: 60px;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    background-color: #fff;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+ }
+
+/* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) { 
+  .App {
+    display: flex;
+    width: 25% !important;
+    height: 80vh;
+    margin-top: 60px;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    background-color: #fff;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+ }
