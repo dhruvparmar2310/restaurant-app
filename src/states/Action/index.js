@@ -1,13 +1,22 @@
-import { GET_DATA } from './types'
-import MainApi from '../../shared/utils/api/index'
+import { ActionTypes } from './types'
 
-const getData = async () => {
-  const result = await MainApi.get('/categories')
-  console.log('result :>> ', result)
+export const getCategory = async (data) => {
   return {
-    type: GET_DATA,
-    payload: result.data
+    type: ActionTypes.GET_CATEGORY,
+    payload: data
   }
 }
 
-export default getData
+export const getProduct = async (data) => {
+  return {
+    type: ActionTypes.GET_PRODUCT,
+    payload: data
+  }
+}
+
+export const setCart = (data, pop, checkbox) => {
+  return {
+    type: ActionTypes.SET_CART,
+    payload: { data, pop, checkbox }
+  }
+}
