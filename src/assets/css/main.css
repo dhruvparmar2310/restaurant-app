@@ -5,14 +5,13 @@ body{
 .App {
     display: flex;
     width: 25% !important;
-    height: 80vh;
+    height: 100vh;
     margin: 60px auto;
     justify-content: center;
     align-content: center;
     text-align: center;
     background-color: #fff;
-    box-sizing: border-box;
-    overflow: hidden;
+    overflow-y: auto !important;
   }
 
   /* Very Small devices (up to 576px) */
