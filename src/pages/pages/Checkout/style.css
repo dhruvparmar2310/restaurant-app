@@ -1,0 +1,148 @@
+.checkout-main{
+    width: 100% !important;
+    position: relative;
+}
+
+.checkout-main h1{
+    font-size: 18px;
+    font-weight: 800;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+
+.checkout-main .main-content .goBack{
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.checkout-main .main-content .goBack:hover{
+    color: var(--main-theme);
+}
+
+.checkout-main .main-content h5{
+    padding: 10px;
+    text-align: start;
+    font-weight: 700 !important;
+    margin: 0;
+}
+
+.checkout-main .main-content .product-details{
+    text-align: start;
+    padding: 0 10px;
+}
+
+.checkout-main .main-content .product-details h5{
+    font-size: 20px;
+}
+
+.checkout-main .main-content .product-details .details h6{
+    margin: 0;
+    font-weight: 800 !important;
+}
+
+.checkout-main .main-content .product-details .details p{
+    color: #666;
+    font-size: 14px;
+}
+
+.checkout-main .main-content .product-details .price{
+    text-align: end;
+    font-weight: 800 !important;
+}
+
+.checkout-main svg{
+    font-size: 20px;
+}
+
+.checkout-main .footer{
+    display: block;
+    height: 10vh;
+    width: 100%;
+    background-color: var(--main-theme);
+    position: absolute !important;
+    bottom: -60% !important;
+    cursor: pointer;
+    padding-top: 10px;
+}
+
+.checkout-main .footer p{
+    text-transform: uppercase;
+    font-weight: 800;
+    margin: 0;
+    font-size: 20px;
+}
+
+.checkout-main .pop-left{
+    height: auto;
+    width: 90%;
+    padding: 10px;
+    border-radius: 15px;
+    z-index: 100;
+    box-shadow: 0 0 100px #444;
+    background-color: #fff;
+    position: relative;
+    margin: 0 auto;
+    /* bring popup up */
+    top: 10px;
+    left: 0px;
+    animation: pop-left 0.5s linear;
+}
+
+@keyframes pop-left {
+	0% {left : -100px; right: 0px;}
+}
+
+.checkout-main .pop-left .pop-left-header h1{
+    text-align: center;
+    font-size: 23px;
+    font-family: sans-serif;
+}
+
+.checkout-main .pop-left .content{
+    font-weight: 600;
+}
+
+.checkout-main .pop-left .content p{
+    margin: 0 !important;
+}
+
+.checkout-main .pop-left .content .button-controls .btnCancel{
+    border: 3px solid var(--main-theme);
+    border-radius: 15px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin: 10px;
+}
+
+.checkout-main .pop-left .content .button-controls .btnCancel:focus, .checkout-main .pop-left .content .button-controls .btnPlaceOrder:focus{
+    box-shadow: none;
+}
+
+.checkout-main .pop-left .content .button-controls .btnPlaceOrder{
+    border: 3px solid var(--main-theme);
+    background-color: var(--main-theme);
+    border-radius: 15px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin: 10px;
+}
+
+.checkout-main .main-content .underline{
+    content: '';
+    display: block;
+    width: 100%;
+    height: 4px;
+    margin-top: 10px;
+    background-color: #f3f3f3;
+}
+
+.checkout-main .main-content .addNotes{
+    padding: 10px;
+}
+
+.checkout-main .main-content .addNotes textarea{
+    border: 3px solid var(--main-theme);
+    border-radius: 15px;
+}
