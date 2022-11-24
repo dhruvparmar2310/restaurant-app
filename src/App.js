@@ -10,7 +10,7 @@ function App () {
     <div className="App shadow">
       <Router>
         <Routes>
-          <Route path='/' element={<MainContent />} />
+          <Route path='/' element={<MainContent />}/>
           <Route path='/checkout' element={<Checkout />} />
         </Routes>
       </Router>
