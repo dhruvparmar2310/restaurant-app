@@ -14,9 +14,9 @@ export const getProduct = (data) => {
   }
 }
 
-export const setCart = (data, pop, checkbox, name, id) => {
+export const setCart = (sizeData, pop, checkbox, name, id, filterProduct) => {
   return {
     type: ActionTypes.SET_CART,
-    payload: { data, pop, checkbox, name, id }
+    payload: { sizeData, pop, checkbox, name, id, filterProduct }
   }
 }
