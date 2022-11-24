@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import '../Checkout/style.css'
 import Header from '../../shared/components/Header'
@@ -5,37 +6,24 @@ import { MdArrowBackIosNew } from 'react-icons/md'
 import { HiDotsHorizontal } from 'react-icons/hi'
 import { TbCurrencyPound } from 'react-icons/tb'
 import thumb from '../../assets/images/thumb.png'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 export default function Checkout () {
   const [toggle, setToggle] = useState(false)
-  const [data, setData] = useState([])
   // const [tempArray, setTempArray] = useState([])
-
+  const checkoutData = useSelector((state) => state.allCart.cart)
+  console.log('checkoutData :>> ', checkoutData)
   const navigate = useNavigate()
-  const name = useLocation()
-  console.log('state :>> ', name.state)
-
-  // const sizeData = useLocation()
-  // console.log('sizeData :>> ', sizeData.state.cart)
 
   const ConfirmOrder = (e) => {
     setToggle(true)
   }
 
-  const getData = () => {
-    setData(name.state.cart)
-  }
-  console.log('temp >> ', data)
-
   const handleGoBack = (e) => {
     e.preventDefault()
     navigate('/')
   }
-
-  useEffect(() => {
-    getData()
-  }, [])
 
   return (
     <div className='checkout-main'>
@@ -66,17 +54,26 @@ export default function Checkout () {
           </>
             : ''}
           <div className='row product-details'>
-          <h5 className='mt-2'>Drinks (4)</h5>
-            {/* <div className='col-lg-6 details'>
-              {data.map((value, index) => {
+              {checkoutData.map((value, index) => {
                 console.log('value >> ', value)
                 return (
-                  <>
-                    <h6>{data.name}</h6>
-                  </>
+                  <React.Fragment key={index}>
+                    <h5 className='mt-2'>
+                    {/* {value.name.map((data, index) => {
+                      return (
+                        <React.Fragment key={index}>
+                          {data.name} ({data.id})
+                        </React.Fragment>
+                      )
+                    })} */}
+                    </h5>
+                    <div className='col-lg-6 details'>
+                      <h6>{value.qnty} x {value.pop.name}</h6>
+                      <p>{value.data.name} {value.checkbox.name}</p>
+                    </div>
+                  </React.Fragment>
                 )
               })}
-              </div> */}
               {/* <div className='col-lg-6'>
               {sizeData.state.cart.data.map((data, index) => {
                 return (
@@ -86,7 +83,7 @@ export default function Checkout () {
                   </>
                 )
               })}
-            </div> */}
+            </div>
             {/* <div className='col-lg-6 price'>
               <p><TbCurrencyPound /> 8.40</p>
             </div> */}

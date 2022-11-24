@@ -130,7 +130,7 @@
 }
 
 .pop-up{
-    height: 80vh;
+    height: auto;
     width: 100%;
     padding: 20px;
     border-top-left-radius: 30px;
@@ -139,8 +139,8 @@
     box-shadow: 0 0 100px #444;
     background-color: #fff;
     position: relative;
-    /* bring popup up */
     top: -350px;
+    /* bring popup up */
     animation: pop-up 1s linear;
 }
 

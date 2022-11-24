@@ -27,7 +27,7 @@ export default function MainContent () {
   const [optionData, setOptionData] = useState([])
   const [optionTotal, setOptionTotal] = useState(0)
 
-  const [quantity, setQuantity] = useState(0)
+  const [quantity, setQuantity] = useState(1)
   const [sumQuantity, setSumQuantity] = useState(0)
 
   const [total, setTotal] = useState('')
@@ -69,24 +69,22 @@ export default function MainContent () {
     getProducts()
   }, [])
 
-  const handlecart = (e, sizeData, popUpDetails, optionData) => {
-    const { value } = e.target
-    console.log('value :>> ', value)
+  const handlecart = (e, sizeData, popUpDetails, optionData, name) => {
     setToggle(false)
-    dispatch(setCart(sizeData, popUpDetails, optionData))
+    console.log('popUpDetails.id :>> ', popUpDetails.id)
+    dispatch(setCart(sizeData, popUpDetails, optionData, name, popUpDetails.id))
   }
 
   // onclick function for main menu who don't have parent
-  const handleClick = (data) => {
+  const handleClick = (data, index) => {
     const id = data.id
 
     const filter = categories.filter((data) => {
       return id === data.parent
     })
     setFilterCategory(filter)
-    setName((prevState) => [...prevState, data.name])
+    setName([data])
   }
-  console.log('name :>> ', name)
 
   // function for the sub menu
   const handleSubCategory = (data) => {
@@ -102,7 +100,7 @@ export default function MainContent () {
   // function for pop-up screen
   const handleMenu = (data) => {
     setToggle(true)
-    setPopUpDetails((prevState) => [...prevState, data])
+    setPopUpDetails(data)
 
     const variants = data.variants
 
@@ -121,8 +119,8 @@ export default function MainContent () {
 
   // Decrement function
   const handleDecrement = (e) => {
-    if (quantity <= 0) {
-      alert('You cannot buy anything in negative.')
+    if (quantity <= 1) {
+      alert('Sorry! You cannot buy zero Quanty. if you not want to buy than close the toggle.')
     } else {
       setQuantity(quantity - 1)
     }
@@ -135,13 +133,13 @@ export default function MainContent () {
     const id = index
     console.log('id >> ', id)
     if (checked) {
-      setOptionData((preState) => [...preState, data])
+      setOptionData([data])
 
       const sum = optionData.reduce((a, b) => a + b, 0.75)
       setOptionTotal(sum)
     } else {
       const filter = optionData.filter((e) => e !== data)
-      setOptionData(filter)
+      setOptionData([filter])
     }
   }
 
@@ -198,7 +196,14 @@ export default function MainContent () {
           ? <>
             <div className='pop-up'>
               <div className='pop-up-header row'>
-                <h1 className='col-lg-9'>{popUpDetails.name}</h1>
+                <h1 className='col-lg-9'>
+                  {/* {popUpDetails.map((data, index) => {
+                    return (
+                      <React.Fragment key={index}>{data.name}</React.Fragment>
+                    )
+                  })} */}
+                  {popUpDetails.name}
+                </h1>
                 <button onClick={() => setToggle(false)} className='btn close col-lg-3'>X</button>
               </div>
               <h1>Size</h1>
@@ -208,7 +213,7 @@ export default function MainContent () {
                     return (
                     <React.Fragment key={index}>
                       <div className='inner-content row'>
-                        <input type='radio' name='size' value={data} onChange={(e) => setSizeData((prevState) => [...prevState, data])} />
+                        <input type='radio' name='size' value={data} onChange={(e) => setSizeData(data)} />
                         <span className='col-lg-6'>{data.name}</span>
                         <span className='col-lg-6 size-price'><TbCurrencyPound />{data.price}</span>
                       </div>
@@ -239,7 +244,7 @@ export default function MainContent () {
                 <input type='text' className='form-control' value={quantity} />
                 <button className='btn' onClick={() => setQuantity(quantity + 1)}>+</button>
               </div>
-              <button className='addOrder mt-3 btn' onClick={(e) => handlecart(e, sizeData, popUpDetails, optionData)}>Add to Order</button>
+              <button className='addOrder mt-3 btn' onClick={(e) => handlecart(e, sizeData, popUpDetails, optionData, name, popUpDetails.id)}>Add to Order</button>
             </div>
             </>
           : ''}
