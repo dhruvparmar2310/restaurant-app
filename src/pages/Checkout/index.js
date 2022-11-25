@@ -54,7 +54,7 @@ export default function Checkout () {
           </>
             : ''}
           <div className='row product-details'>
-              {checkoutData.map((value, index) => {
+              {checkoutData?.map((value, index) => {
                 console.log('value >> ', value)
                 return (
                   <React.Fragment key={index}>
@@ -66,47 +66,32 @@ export default function Checkout () {
                         </React.Fragment>
                       )
                     })} */}
+                    {value.name}
                     </h5>
                     <div className='col-lg-6 details'>
-                      <h6>{value.qnty} x {value.pop.name}</h6>
-                      <p>{value.data.name} {value.checkbox.name}</p>
+                      <h6>{value.quantity} x {value.pop.name}</h6>
+                      <p>{value.sizeData.name} <br/>{value.checkbox.map((data, index) => <span key={index}>{data.name.concat(', ')}</span>)}</p>
+                    </div>
+                    <div className='col-lg-6 price'>
+                      <p><TbCurrencyPound /> {value.total}</p>
                     </div>
                   </React.Fragment>
                 )
               })}
-              {/* <div className='col-lg-6'>
-              {sizeData.state.cart.data.map((data, index) => {
-                return (
-                  <>
-                    <p>{data.name}</p>
-                    <p>{data.price}</p>
-                  </>
-                )
-              })}
-            </div>
-            {/* <div className='col-lg-6 price'>
-              <p><TbCurrencyPound /> 8.40</p>
-            </div> */}
           </div>
-          {/* <div className='row product-details mt-2'>
-            <div className='col-lg-6 details'>
-              <h6>1 x Carlsberg</h6>
-              <p>{sizeData.state.cart.pop.map((data, index) => {
-                return (
-                  <React.Fragment key={index}>
-                    {data.name}
-                  </React.Fragment>
-                )
-              })}</p>
-            </div>
-            <div className='col-lg-6 price'>
-              <p><TbCurrencyPound /> {sizeData.state.sizeData.price}</p>
-            </div>
-          </div> */}
           <span className='underline'></span>
           <div className='addNotes'>
             <h5>Add notes:</h5>
             <textarea className='form-control' rows={5}></textarea>
+          </div>
+          <span className='underline'></span>
+          <div className='table row'>
+            <div className='col-lg-6'>
+              <h5>Table Number</h5>
+            </div>
+            <div className='col-lg-6'>
+              <button className='btn'>32</button>
+            </div>
           </div>
       </div>
       <div className='footer' onClick={(e) => ConfirmOrder(e)}>

@@ -61,8 +61,8 @@
     height: 10vh;
     width: 100%;
     background-color: var(--main-theme);
-    position: absolute;
-    bottom: 0;
+    position: absolute !important;
+    bottom: -60% !important;
     cursor: pointer;
     padding-top: 10px;
 }
