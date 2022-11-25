@@ -130,7 +130,7 @@
 }
 
 .pop-up{
-    height: auto;
+    height: 100vh;
     width: 100%;
     padding: 20px;
     border-top-left-radius: 30px;
@@ -139,7 +139,7 @@
     box-shadow: 0 0 100px #444;
     background-color: #fff;
     position: relative;
-    top: -350px;
+    top: -250px;
     /* bring popup up */
     animation: pop-up 1s linear;
 }
@@ -196,6 +196,7 @@
     margin: 8px 0;
     text-transform: capitalize;
     font-size: 20px;
+    cursor: pointer;
 }
 
 .pop-up .variants .inner-content .size-price{
@@ -203,7 +204,7 @@
 }
 
 .pop-up .variants .inner-content input{
-    /* appearance: none; */
+    appearance: none;
     padding: 0;
     margin: 0;
 }
@@ -237,6 +238,7 @@
     text-transform: capitalize;
     font-size: 15px;
     font-weight: 800;
+    cursor: pointer;
 }
 
 .pop-up .extra .inner-content span > svg{

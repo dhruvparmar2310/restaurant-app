@@ -9,6 +9,7 @@ import MainApi from '../../shared/utils/api'
 
 // import action
 import { getCategory, getProduct, setCart } from '../../states/Action'
+import { Checkbox } from 'semantic-ui-react'
 
 export default function MainContent () {
   const [name, setName] = useState([])
@@ -27,10 +28,11 @@ export default function MainContent () {
   const [optionData, setOptionData] = useState([])
   const [optionTotal, setOptionTotal] = useState(0)
 
-  const [quantity, setQuantity] = useState(1)
+  const [quantity, setQuantity] = useState(0)
   const [sumQuantity, setSumQuantity] = useState(0)
 
-  const [total, setTotal] = useState('')
+  const [total, setTotal] = useState(0)
+  const [updateSum, setUpdatetSum] = useState()
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -41,8 +43,7 @@ export default function MainContent () {
   const productData = useSelector((state) => state.allProduct.products)
   // console.log('data :>> ', productData)
 
-  const cart = useSelector((state) => state.allCart.cart)
-  console.log('cart :>> ', cart)
+  const cartData = useSelector((state) => state.allCart.cart)
 
   const getCategories = async () => {
     const response = await MainApi.get('/categories')
@@ -67,13 +68,35 @@ export default function MainContent () {
   useEffect(() => {
     getCategories()
     getProducts()
-  }, [])
+  }, [total])
+  let sum = 0
+  const handlecart = (sizeData, popUpDetails, optionData, name, filterProduct, quantity) => {
+    if ((optionData.length !== 0 && sizeData !== []) && quantity >= 1) {
+      const checkbox = optionData.map((data) => data.price)
+      const sumCheckbox = checkbox.reduce((a, b) => a + b)
+      console.log('checkbox :>> ', sumCheckbox)
 
-  const handlecart = (e, sizeData, popUpDetails, optionData, name) => {
+      sum = (sumCheckbox + sizeData.price) * quantity
+      console.log('sum :>> ', sum)
+      setTotal([sum])
+    }
     setToggle(false)
-    console.log('popUpDetails.id :>> ', popUpDetails.id)
-    dispatch(setCart(sizeData, popUpDetails, optionData, name, popUpDetails.id))
+
+    console.log('total :>> ', total)
+    const cart = setCart(sizeData, popUpDetails, optionData, name, filterProduct, quantity, sum)
+    if (cart.payload) {
+      // if (cart.payload.id === popUpDetails.id && cart.payload.filterProduct[0].name === popUpDetails.name) {
+      //   setQuantity(quantity += quantity)
+      //   setCart(sizeData, popUpDetails, optionData, name, popUpDetails.id, filterProduct, quantity, total += total)
+      //   // console.log(cart)
+      //   dispatch(cart)
+      // }
+      dispatch(cart)
+    } else {
+      dispatch(cart)
+    }
   }
+  console.log('cartData :>> ', cartData)
 
   // onclick function for main menu who don't have parent
   const handleClick = (data, index) => {
@@ -83,22 +106,22 @@ export default function MainContent () {
       return id === data.parent
     })
     setFilterCategory(filter)
-    setName([data])
+    setName([data.name])
+    setQuantity(0)
   }
 
   // function for the sub menu
   const handleSubCategory = (data) => {
     const id = data.id
 
-    const productsItem = products.filter((data) => data.parentId === id)
+    const productsItem = products.filter((data) => data ? data.parentId === id : alert('No'))
     setFilterProduct(productsItem)
-
-    const totalItems = productsItem.length
-    setTotal(totalItems)
+    setQuantity(0)
   }
 
   // function for pop-up screen
   const handleMenu = (data) => {
+    setQuantity(0)
     setToggle(true)
     setPopUpDetails(data)
 
@@ -110,11 +133,7 @@ export default function MainContent () {
   }
 
   const handleViewOrder = () => {
-    navigate('/checkout', {
-      state: {
-        name, sizeData, cart
-      }
-    })
+    navigate('/checkout')
   }
 
   // Decrement function
@@ -132,14 +151,16 @@ export default function MainContent () {
 
     const id = index
     console.log('id >> ', id)
-    if (checked) {
-      setOptionData([data])
 
-      const sum = optionData.reduce((a, b) => a + b, 0.75)
-      setOptionTotal(sum)
+    if (checked) {
+      setOptionData((prevState) => [...prevState, data])
+
+      // const sum = optionData.reduce((a, b) => a + b, 0.75)
+      // console.log('sum :>> ', sum)
+      // setOptionTotal(sum)
     } else {
       const filter = optionData.filter((e) => e !== data)
-      setOptionData([filter])
+      setOptionData(filter)
     }
   }
 
@@ -165,14 +186,23 @@ export default function MainContent () {
                   })}
               </div>
               <div className='sub-category'>
-              {filterCategory?.map((data, index) =>
+              {filterCategory.length !== 0
+                ? filterCategory?.map((data, index) =>
                   <React.Fragment key={index}>
                       <button className='btn btn-sm' onClick={(e) => handleSubCategory(data)}>{data.name}</button>
                   </React.Fragment>
-              )}
+                )
+                : categories?.map((data, index) => {
+                  return (
+                    <React.Fragment key={index}>
+                        {data.parent === 1 ? <button className='btn btn-sm' onClick={(e) => handleSubCategory(data)}>{data.name}</button> : ''}
+                    </React.Fragment>
+                  )
+                })}
               </div>
               <div className='menu'>
-                {filterProduct?.map((data, index) =>
+                {filterProduct.length !== 0
+                  ? filterProduct.map((data, index) =>
                   <React.Fragment key={index}>
                     <div className='menu-item' onClick={(e) => handleMenu(data)}>
                       <div className='item-content'>
@@ -184,67 +214,83 @@ export default function MainContent () {
                       </div>
                     </div>
                   </React.Fragment>
-                )}
+                  )
+                  : products?.map((data, index) => {
+                    return (
+                      <React.Fragment key={index}>
+                        {data.parentId === 7
+                          ? <div className='menu-item' onClick={(e) => handleMenu(data)}>
+                              <div className='item-content'>
+                                <h1>{data.name}</h1>
+                                <p>{data.description}</p>
+                              </div>
+                              <div className='item-price'>
+                                <p><TbCurrencyPound />{data.price}</p>
+                              </div>
+                            </div>
+                          : ''}
+                      </React.Fragment>
+                    )
+                  })}
               </div>
           </div>
       </div>
       <div className='footer' onClick={(e) => handleViewOrder(e)}>
         <p>View Basket</p>
-        <p><TbCurrencyPound /> {optionTotal}/ {quantity} Items</p>
+        <p><TbCurrencyPound /> {total}/ {quantity} Items</p>
       </div>
         {toggle
           ? <>
             <div className='pop-up'>
               <div className='pop-up-header row'>
                 <h1 className='col-lg-9'>
-                  {/* {popUpDetails.map((data, index) => {
-                    return (
-                      <React.Fragment key={index}>{data.name}</React.Fragment>
-                    )
-                  })} */}
                   {popUpDetails.name}
                 </h1>
                 <button onClick={() => setToggle(false)} className='btn close col-lg-3'>X</button>
               </div>
-              <h1>Size</h1>
-              <div className='variants'>
                 {variants
-                  ? variants.map((data, index) => {
-                    return (
-                    <React.Fragment key={index}>
-                      <div className='inner-content row'>
-                        <input type='radio' name='size' value={data} onChange={(e) => setSizeData(data)} />
-                        <span className='col-lg-6'>{data.name}</span>
-                        <span className='col-lg-6 size-price'><TbCurrencyPound />{data.price}</span>
+                  ? <>
+                      <h1>Size</h1>
+                      <div className='variants'>
+                      {variants.map((data, index) => {
+                        return (
+                        <React.Fragment key={index}>
+                          <label className='inner-content row'>
+                            <input type='radio' name='size' value={data} onChange={(e) => setSizeData(data)} />
+                            <span className='col-lg-6'>{data.name}</span>
+                            <span className='col-lg-6 size-price'><TbCurrencyPound />{data.price}</span>
+                          </label>
+                        </React.Fragment>
+                        )
+                      })}
                       </div>
-                    </React.Fragment>
-                    )
-                  })
-                  : ''}
-              </div>
-              <h1>Select Options</h1>
-              <div className='extra mt-2'>
+                    </>
+                  : <></>}
                 {extra
-                  ? extra.map((data, index) => {
-                    return (
-                    <React.Fragment key={index}>
-                      <div className='inner-content row' id={index}>
-                        <span className='col-lg-9'>{data.name} (+ <TbCurrencyPound />{data.price})</span>
-                        <div className='col-lg-3 checkbox-list'>
-                          <input className='form-check-input' value={data} type='checkbox' onChange={(e) => handleChange(e, data, index)} />
-                        </div>
+                  ? <>
+                      <h1>Select Options</h1>
+                      <div className='extra mt-2'>
+                        {extra.map((data, index) => {
+                          return (
+                            <React.Fragment key={index}>
+                              <label className='inner-content row' id={index}>
+                                <span className='col-lg-9'>{data.name} (+ <TbCurrencyPound />{data.price})</span>
+                                <div className='col-lg-3 checkbox-list'>
+                                  <input className='form-check-input' value={data} type='checkbox' onChange={(e) => handleChange(e, data, index)} />
+                                </div>
+                              </label>
+                            </React.Fragment>
+                          )
+                        })}
                       </div>
-                    </React.Fragment>
-                    )
-                  })
-                  : ''}
-              </div>
+                    </>
+                  : <></>}
               <div className='button-controls mt-4'>
                 <button className='btn' onClick={(e) => handleDecrement(e)}>-</button>
                 <input type='text' className='form-control' value={quantity} />
                 <button className='btn' onClick={() => setQuantity(quantity + 1)}>+</button>
               </div>
-              <button className='addOrder mt-3 btn' onClick={(e) => handlecart(e, sizeData, popUpDetails, optionData, name, popUpDetails.id)}>Add to Order</button>
+              <button className='addOrder mt-3 btn' onClick={() => handlecart(sizeData, popUpDetails, optionData, name, filterProduct, quantity)}>Add to Order</button>
             </div>
             </>
           : ''}
