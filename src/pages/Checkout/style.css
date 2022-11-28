@@ -1,16 +1,75 @@
+@font-face {
+    font-family: 'Gilroy-Light';
+    src: local('Gilroy-Light'), url(../../assets/fonts/Gilroy/Gilroy-Light.otf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Gilroy-ExtraBold';
+    src: local('Gilroy-ExtraBold'), url(../../assets/fonts/Gilroy/Gilroy-ExtraBold.otf) format('truetype');
+}
+
 .checkout-main{
     width: 100% !important;
     position: relative;
 }
 
+.checkout-main .main-content .table{
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.checkout-main .main-content .table .table-name{
+    display: flex;
+    align-items: center;
+}
+
+.checkout-main .main-content .table h5{
+    font-weight: 800;
+    font-family: 'Gilroy-ExtraBold';
+    font-size: 28px;
+    align-items: center;
+    display: flex;
+}
+
+.checkout-main .main-content .table button{
+    font-weight: 800;
+    font-family: 'Gilroy-ExtraBold';
+    font-size: 38px;
+    border: 3px solid var(--main-theme);
+    border-radius: 15px;
+}
+
 .checkout-main h1{
     font-size: 18px;
     font-weight: 800;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Gilroy-ExtraBold';
     margin-top: 10px;
     margin-bottom: 0;
 }
 
+.checkout-main .hotel{
+    margin-top: 5px;
+    padding: 15px;
+    padding-bottom: 0 !important;
+}
+
+.checkout-main .hotel .hotel-name h5{
+    font-family: 'Gilroy-ExtraBold';
+    font-size: 15px !important;
+    font-weight: 800;
+    margin: 0;
+    padding: 0;
+}
+
+.checkout-main .hotel .hotel-address p{
+    font-family: 'Gilroy-Light';
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 14Ftablepx;
+    text-align: start;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
 
 .checkout-main .main-content .goBack{
     cursor: pointer;
@@ -24,7 +83,8 @@
 .checkout-main .main-content h5{
     padding: 10px;
     text-align: start;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
+    font-family: 'Gilroy-ExtraBold';
     margin: 0;
 }
 
@@ -40,11 +100,14 @@
 .checkout-main .main-content .product-details .details h6{
     margin: 0;
     font-weight: 800 !important;
+    font-family: 'Gilroy-ExtraBold';
 }
 
 .checkout-main .main-content .product-details .details p{
     color: #666;
     font-size: 14px;
+    font-family: 'Gilroy-Light';
+    font-weight: 300;
 }
 
 .checkout-main .main-content .product-details .price{
