@@ -1,0 +1,55 @@
+@font-face {
+    font-family: 'Gilroy-Light';
+    src: local('Gilroy-Light'), url(../../../assets/fonts/Gilroy/Gilroy-Light.otf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Gilroy-ExtraBold';
+    src: local('Gilroy-ExtraBold'), url(../../../assets/fonts/Gilroy/Gilroy-ExtraBold.otf) format('truetype');
+}
+
+.pop-up .variants .inner-content{
+    text-align: start;
+    border: 3px solid var(--main-theme);
+    display: flex;
+    border-radius: 15px;
+    padding: 10px;
+    margin: 8px 0;
+    text-transform: capitalize;
+    font-size: 20px;
+    font-family: 'Gilroy-ExtraBold';
+    cursor: pointer;
+}
+
+.pop-up .variants .inner-content .size-price{
+    text-align: end;
+}
+
+.pop-up .variants .inner-content input{
+    appearance: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pop-up .variants::after{
+    content: '';
+    width: 100%;
+    height: 4px;
+    margin: 0 auto;
+    background-color: #f3f3f3;
+    display: block;
+    margin-top: 20px;
+}
+
+.pop-up .variants .inner-content:hover{
+    background-color: var(--main-theme);
+}
+
+.pop-up .variants .inner-content span{
+    font-weight: 800 !important;
+    font-family: 'Gilroy-ExtraBold';
+}
+.pop-up .variants .inner-content span > svg{
+    font-size: 25px;
+    font-weight: 800;
+}
