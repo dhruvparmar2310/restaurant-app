@@ -4,7 +4,7 @@ body{
 
 .App {
     display: flex;
-    width: 25% !important;
+    width: 100% !important;
     height: 100vh;
     margin: 60px auto;
     justify-content: center;
@@ -39,6 +39,21 @@ body{
     width: 60% !important;
     height: 80vh;
     margin-top: 60px;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    background-color: #fff;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+ }
+
+ @media (max-width: 450px) { 
+  .App {
+    display: flex;
+    width: 100% !important;
+    height: 100vh !important;
+    margin: 0;
     justify-content: center;
     align-content: center;
     text-align: center;
