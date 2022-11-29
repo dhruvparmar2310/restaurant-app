@@ -14,9 +14,9 @@ export const getProduct = (data) => {
   }
 }
 
-export const setCart = (sizeData, popUpDetails, optionData, name, filterProduct, sum, id, qnty, itemCount) => {
+export const setCart = (sizeData, popUpDetails, optionData, name, filterProduct, sum, id, qnty, itemCount, productId) => {
   return {
     type: ActionTypes.SET_CART,
-    payload: { sizeData, popUpDetails, optionData, name, filterProduct, sum, id, qnty, itemCount }
+    payload: { sizeData, popUpDetails, optionData, name, filterProduct, sum, id, qnty, itemCount, productId }
   }
 }
