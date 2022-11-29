@@ -10,6 +10,7 @@
 
 .checkout-main{
     width: 100% !important;
+    height: 100% !important;
     position: relative;
 }
 
@@ -72,12 +73,71 @@
 }
 
 .checkout-main .main-content .goBack{
+    width: 10%;
     cursor: pointer;
     transition: 0.3s ease-in-out;
 }
 
 .checkout-main .main-content .goBack:hover{
     color: var(--main-theme);
+}
+
+.checkout-main .main-content .option{
+    width: 10%;
+}
+.checkout-main .main-content .header{
+    width: 80%;
+}
+
+@media (max-width: 450px) {
+    .checkout-main .main-content .row{
+        padding: 10px;
+        padding-top: 0;
+    }
+    .checkout-main .main-content .goBack{
+        width: 10%;
+    }
+    .checkout-main .main-content .option{
+        width: 10%;
+    }
+    .checkout-main .main-content .header{
+        width: 80%;
+    }
+    .checkout-main .main-content .table{
+        padding: 15px;
+        margin-top: 10px;
+    }
+    .checkout-main .main-content .table .table-name{
+        display: flex;
+        align-items: center;
+        width: 70%;
+    }
+    
+    .checkout-main .main-content .table h5{
+        font-weight: 800;
+        font-family: 'Gilroy-ExtraBold';
+        font-size: 25px;
+        align-items: center;
+        display: flex;
+    }
+
+    .checkout-main .main-content .table .table-number{
+        width: 30%;
+        align-items: flex-start;
+        display: flex;
+    }
+    
+    .checkout-main .main-content .table button{
+        font-size: 35px;
+    }
+
+    .checkout-main .main-content .product-details .details{
+        width: 70%;
+    }
+    .checkout-main .main-content .product-details .price{
+        width: 30%;
+    }
+    
 }
 
 .checkout-main .main-content h5{
@@ -91,6 +151,15 @@
 .checkout-main .main-content .product-details{
     text-align: start;
     padding: 0 10px;
+}
+
+.checkout-main .main-content .product-details .empty{
+    font-size: 25px;
+    margin-top: 10px;
+    text-shadow: 0px 3px 4px #555;
+    letter-spacing: 0.3mm;
+    word-spacing: 1mm;
+    color: #fff;
 }
 
 .checkout-main .main-content .product-details h5{
@@ -121,13 +190,13 @@
 
 .checkout-main .footer{
     display: block;
-    height: 10vh;
+    height: auto;
     width: 100%;
     background-color: var(--main-theme);
     position: absolute !important;
-    bottom: -60% !important;
+    bottom: auto !important;
     cursor: pointer;
-    padding-top: 10px;
+    padding: 10px 0 !important;
 }
 
 .checkout-main .footer p{
