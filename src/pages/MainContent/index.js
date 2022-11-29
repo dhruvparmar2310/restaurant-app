@@ -2,22 +2,23 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import Header from '../../shared/components/Header'
 import '../MainContent/style.css'
-import { TbCurrencyPound } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import MainApi from '../../shared/utils/api'
 
 // import action
 import { getCategory, getProduct, setCart } from '../../states/Action'
-import Variants from '../../shared/components/Variants'
 
 export default function MainContent () {
   const [name, setName] = useState([])
   const [id, setID] = useState(null)
+  const [catId, setCatId] = useState(1)
   const [categories, setCategories] = useState([])
   const [filterCategory, setFilterCategory] = useState([])
 
   const [products, setProducts] = useState([])
+  const [productId, setProductId] = useState(null)
+  const [proId, setProId] = useState(7)
   const [filterProduct, setFilterProduct] = useState([])
 
   const [toggle, setToggle] = useState(false)
@@ -30,12 +31,13 @@ export default function MainContent () {
   const [optionTotal, setOptionTotal] = useState(0)
 
   const [quantity, setQuantity] = useState(0)
-  const [sumQuantity, setSumQuantity] = useState(0)
 
   const [total, setTotal] = useState(0)
-  const [defaultData, setDefaultData] = useState()
+  const [defaultData, setDefaultData] = useState({})
 
-  const [isActive, setIsActive] = useState()
+  const [isActive, setIsActive] = useState(id)
+  const [isProductActive, setIsProductActive] = useState(productId)
+  const [isSizeActive, setIsSizeActive] = useState(sizeData)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -76,10 +78,10 @@ export default function MainContent () {
     if ((optionData.length !== 0 && sizeData !== []) && quantity >= 1) {
       const checkbox = optionData.map((data) => data.price)
       const sumCheckbox = checkbox.reduce((a, b) => a + b)
-      console.log('checkbox :>> ', sumCheckbox)
+      // console.log('checkbox :>> ', sumCheckbox)
 
       sum = (sumCheckbox + sizeData.price) * quantity
-      console.log('sum :>> ', sum)
+      // console.log('sum :>> ', sum)
       setTotal([sum])
     } else if ((optionData.length === 0 && sizeData.length === 0) && quantity >= 1) {
       sum = popUpDetails.price * quantity
@@ -87,60 +89,75 @@ export default function MainContent () {
     } else if ((optionData.length === 0 && sizeData.length !== 0) && quantity >= 1) {
       sum = sizeData.price * quantity
       setTotal([sum])
+    } 
+    if ((optionData.length !== 0 && sizeData.length === 0) && quantity >= 1) {
+      const checkbox = optionData.map((data) => data.price)
+      const sumCheckbox = checkbox.reduce((a, b) => a + b)
+      // console.log('checkbox :>> ', sumCheckbox)
+
+      sum = (popUpDetails.price + sumCheckbox) * quantity
+      // console.log('sum :>> ', sum)
+      setTotal([sum])
     }
     setToggle(false)
 
-    console.log('total :>> ', total)
-    const cart = setCart(sizeData, popUpDetails, optionData, name, filterProduct, sum, id, quantity, quantity)
-    // if (cart.payload) {
-    //   // if (cart.payload.popUpDetails.id === popUpDetails.id && cart.payload.filterProduct[0].name === popUpDetails.name && cart.payload.sizeData.name === sizeData.name) {
-    //   //   setCart(sizeData, popUpDetails, optionData, name, filterProduct, setQuantity(quantity += 1), sum += sum)
-    //   //   // console.log(cart)
-    //   //   dispatch(cart)
-    //   // } else {
-    //   //   setCart(sizeData, popUpDetails, optionData, name, filterProduct, quantity, sum += sum)
-    //   //   dispatch(cart)
-    //   // }
-    //   setCart(sizeData, popUpDetails, optionData, name, filterProduct, setQuantity(quantity += 1), sum += sum)
-    //   dispatch(cart)
-    // } else {
-    //   dispatch(cart)
-    // }
-    dispatch(cart)
+    // console.log('total :>> ', total)
+    const cart = setCart(sizeData, popUpDetails, optionData, name, filterProduct, sum, id, quantity, quantity, productId)
+    if (quantity > 0) {
+      dispatch(cart)
+    } else {
+      alert('Please select atleast one product')
+    }
   }
-  console.log('cartData :>> ', cartData)
+  // console.log('cartData :>> ', cartData)
 
   // onclick function for main menu who don't have parent
   const handleClick = (data, index) => {
     if (data) {
       const id = data.id
       setID(id)
+      setIsActive(id)
+      setCatId(id)
 
       const filter = categories.filter((data) => {
         return id === data.parent
       })
       setFilterCategory(filter)
+      setDefaultData(filter[0])
       setName([data.name])
     } else {
       
     }
   }
-  console.log('default >> ', defaultData)
 
   // function for the sub menu
   const handleSubCategory = (data) => {
-    console.log('data >> ', data)
-    const id = data.id
+    if (data) {
+      const id = data.id
+      setProductId(id)
+      setIsProductActive(id)
+      setProId(id)
+      
+      const productsItem = products.filter((data) => data ? data.parentId === id : alert('No'))
+      setFilterProduct(productsItem)
 
-    const productsItem = products.filter((data) => data ? data.parentId === id : alert('No'))
-    setFilterProduct(productsItem)
+      setTotal(0)
+      setQuantity(0)
+    }
   }
 
   useEffect(() => {
-    handleClick({id: 1, name: 'DRINKS', parent: null})
-    handleSubCategory({id: 7, name: 'Beers', parent: 1})
+    handleClick({ id: catId, name: 'DRINKS' })
+    // handleSubCategory({id: 7, name: 'Beers', parent: 1})
+    handleSubCategory({ id: proId })
   }, [categories, products])
 
+  useEffect(() => {
+    if (defaultData) {
+      const newData = defaultData.id
+      handleSubCategory({ id: newData })
+    }
+  }, [filterCategory])
 
   // function for pop-up screen
   const handleMenu = (data) => {
@@ -167,18 +184,26 @@ export default function MainContent () {
     }
   }
 
+  // function for radio button
+  const handleSizeData = (data) => {
+    if (data) {
+      setSizeData(data)
+      setIsSizeActive(data)
+    }
+  }
+
+  // useEffect(() => {
+  //   handleSizeData({name: 'half pint', price: 6.5})
+  // }, [])
+
   // function for checkboxs
-  const handleChange = (e, data, index) => {
-    const { value, checked } = e.target
+  const handleOptionData = (e, data, index) => {
+    const { checked } = e.target
 
     const id = index
 
     if (checked) {
-      setOptionData((prevState) => [...prevState, data])
-
-      // const sum = optionData.reduce((a, b) => a + b, 0.75)
-      // console.log('sum :>> ', sum)
-      // setOptionTotal(sum)
+      setOptionData([data])
     } else {
       const filter = optionData.filter((e) => e !== data)
       setOptionData(filter)
@@ -188,7 +213,6 @@ export default function MainContent () {
   // function for Add To Order
   const handleAddToOrder = (e, data) => {
     const prevQty = data
-    setSumQuantity(prevQty)
     setToggle(false)
   }
 
@@ -198,58 +222,75 @@ export default function MainContent () {
         <div onClick={() => setToggle(false)}>
           <Header />
         </div>
-          <div className='inner-content'>
-              <div className='categories' onClick={() => setToggle(false)}>
-                  {categories?.map((data, index) => {
-                    return (
-                      <React.Fragment key={index}>
-                          {data.parent === null ? <button className={isActive === 1 ? 'btn btn-sm active' : 'btn btn-sm'} onClick={(e) => handleClick(data)}>{data.name}</button> : ''}
-                      </React.Fragment>
-                    )
-                  })}
-              </div>
-              <div className='sub-category' onClick={() => setToggle(false)}>
+        <div className='inner-content'>
+            <div className='categories' onClick={() => setToggle(false)}>
+                {categories?.map((data, index) => {
+                  return (
+                    <React.Fragment key={index}>
+                        {data.parent === null ? <button className={isActive === categories[index].id ? 'btn btn-sm active' : 'btn btn-sm'} onClick={(e) => handleClick(data)}>{data.name}</button> : ''}
+                    </React.Fragment>
+                  )
+                })}
+            </div>
+            <div className='sub-category' onClick={() => setToggle(false)}>
               {filterCategory.length !== 0
                 ? filterCategory?.map((data, index) =>
                   <React.Fragment key={index}>
-                      <button className='btn btn-sm' onClick={(e) => handleSubCategory(data)}>{data.name}</button>
+                      <button className={isProductActive === filterCategory[index].id ? 'btn btn-sm active' : 'btn btn-sm'} onClick={(e) => handleSubCategory(data)}>{data.name}</button>
                   </React.Fragment>
                 )
-              : 'No Category Data'}
-              </div>
-              <div className='menu'>
-                {filterProduct.length !== 0
-                  ? filterProduct.map((data, index) =>
-                  <React.Fragment key={index}>
-                    <div className='menu-item' onClick={(e) => handleMenu(data)}>
-                      <div className='item-content'>
-                        <h1>{data.name}</h1>
-                        <p>{data.description}</p>
-                      </div>
-                      <div className='item-price'>
-                        <p><TbCurrencyPound />{data.price}</p>
-                      </div>
+              : <p id='loading'>Loading...</p>}
+            </div>
+            <div className='menu'>
+              {filterProduct.length !== 0
+                ? filterProduct.map((data, index) =>
+                <React.Fragment key={index}>
+                  <div className='menu-item' onClick={(e) => handleMenu(data)}>
+                    <div className='item-content'>
+                      <h1>{data.name}</h1>
+                      <p>{data.description}</p>
                     </div>
-                  </React.Fragment>
-                  )
-                : 'No Data'}
-              </div>
-          </div>
+                    <div className='item-price'>
+                      <p>£{data.price}</p>
+                    </div>
+                  </div>
+                </React.Fragment>
+                )
+              : <p id='NoData'>No Data</p>}
+            </div>
+        </div>
       </div>
       <div className='footer' onClick={(e) => handleViewOrder(e)}>
         <p>View Basket</p>
-        <p><TbCurrencyPound /> {total}/ {quantity} Items</p>
+        <p>£ {total}/ {quantity} Items</p>
       </div>
         {toggle
           ? <>
             <div className='pop-up'>
               <div className='pop-up-header row'>
-                <h1 className='col-lg-9'>
+                <h1 className='col-lg-9 col-md-9 col-sm-9 col-xs-9'>
                   {popUpDetails.name}
                 </h1>
-                <button onClick={() => setToggle(false)} className='btn close col-lg-3'>X</button>
+                <button onClick={() => setToggle(false)} className='btn close col-lg-3 col-md-3 col-sm-3 col-xs-3'>X</button>
               </div>
-                <Variants variants={variants} setSizeData={setSizeData} />
+                {/* <Variants variants={variants} setSizeData={setSizeData} /> */}
+                {variants
+                  ? <>
+                      <h1>Size</h1>
+                      <div className='variants'>
+                      {variants.map((data, index) => {
+                      return (
+                      <React.Fragment key={index}>
+                          <div className={isSizeActive === variants[index] ? 'inner-content row active' : 'inner-content row'} onClick={(e) => handleSizeData(data)}>
+                            <span className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>{data.name}</span>
+                            <span className='col-lg-6 col-md-6 col-sm-6 col-xs-6 size-price'>£ {data.price}</span>
+                          </div>
+                      </React.Fragment>
+                      )
+                      })}
+                      </div>
+                  </>
+                  : <></>}
                 {extra
                   ? <>
                       <h1 className='mt-3'>Select Options</h1>
@@ -258,9 +299,9 @@ export default function MainContent () {
                           return (
                             <React.Fragment key={index}>
                               <label className='inner-content row' id={index}>
-                                <span className='col-lg-9'>{data.name} (+ <TbCurrencyPound />{data.price})</span>
-                                <div className='col-lg-3 checkbox-list'>
-                                  <input className='form-check-input' value={data} type='checkbox' onChange={(e) => handleChange(e, data, index)} />
+                                <span className='col-lg-9 col-md-9 col-sm-9 col-xs-9'>{data.name} (+ £ {data.price})</span>
+                                <div className='col-lg-3 col-md-3 col-sm-3 col-xs-3 checkbox-list'>
+                                  <input className='form-check-input' value={data} type='checkbox' onClick={(e) => handleOptionData(e, data, index)} />
                                 </div>
                               </label>
                             </React.Fragment>
