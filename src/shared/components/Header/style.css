@@ -1,10 +1,16 @@
-.header{
-    width: 100%;
+@font-face {
+    font-family: 'Gilroy-Light';
+    src: local('Gilroy-Light'), url(../../../assets/fonts/Gilroy/Gilroy-Light.otf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Gilroy-ExtraBold';
+    src: local('Gilroy-ExtraBold'), url(../../../assets/fonts/Gilroy/Gilroy-ExtraBold.otf) format('truetype');
 }
 
 .header h4{
     font-weight: 800;
-    font-family: sans-serif;
+    font-family: 'Gilroy-ExtraBold';
     text-align: center;
     margin-top: 20px;
     letter-spacing: -0.1mm;
@@ -14,4 +20,7 @@
     color: #161616;
     font-size: 13px;
     line-height: 15px;
+    font-family: 'Gilroy-Light';
+    font-weight: 300;
 }
+
