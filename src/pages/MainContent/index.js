@@ -5,10 +5,16 @@ import '../MainContent/style.css'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import MainApi from '../../shared/utils/api'
+import LoadingScreen from '../../shared/components/LoadingScreen'
 
 // import action
 import { getCategory, getProduct, setCart } from '../../states/Action'
-import LoadingScreen from '../../shared/components/LoadingScreen'
+
+// import i18nProvider
+import { I18NProvider, LOCALES } from '../../i18n'
+import { FormattedMessage } from 'react-intl'
+import translate from '../../i18n/translate'
+import { HiDotsHorizontal } from 'react-icons/hi'
 
 export default function MainContent () {
   const [name, setName] = useState([])
@@ -40,6 +46,9 @@ export default function MainContent () {
   const [isProductActive, setIsProductActive] = useState(productId)
   const [isSizeActive, setIsSizeActive] = useState(sizeData)
   const [isLoading, setIsLoading] = useState(false)
+
+  // state for internationalization
+  const [locale, setLocale] = useState(LOCALES.ENGLISH)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -222,109 +231,128 @@ export default function MainContent () {
   }
 
   return (
-    <div className='main'>
-      {isLoading ? <LoadingScreen />  :
-      <>
-        <div className='main-content' id='main-content'>
-            <div className='main-header' onClick={() => setToggle(false)}>
-              <Header />
-            </div>
-            <div className='inner-content'>
-              <div className='categories' onClick={() => setToggle(false)}>
-                {categories?.map((data, index) => {
-                  return (
-                    <React.Fragment key={index}>
-                      {data.parent === null ? <button className={isActive === categories[index].id ? 'btn btn-sm active' : 'btn btn-sm'} onClick={(e) => handleClick(data)}>{data.name}</button> : ''}
-                    </React.Fragment>
-                  )
-                })}
-              </div>
-              <div className='sub-category' onClick={() => setToggle(false)}>
-                {filterCategory.length !== 0
-                  ? filterCategory?.map((data, index) => <React.Fragment key={index}>
-                    <button className={isProductActive === filterCategory[index].id ? 'btn btn-sm active' : 'btn btn-sm'} onClick={(e) => handleSubCategory(data)}>{data.name}</button>
-                  </React.Fragment>
-                  )
-                  : <p id='loading'>Loading...</p>}
-              </div>
-              <div className='menu'>
-                {filterProduct.length !== 0
-                  ? filterProduct.map((data, index) => <React.Fragment key={index}>
-                    <div className='menu-item' onClick={(e) => handleMenu(data)}>
-                      <div className='item-content'>
-                        <h1>{data.name}</h1>
-                        <p>{data.description}</p>
-                      </div>
-                      <div className='item-price'>
-                        <p>£{data.price}</p>
-                      </div>
+    <I18NProvider locale={locale}>
+      <div className='main'>
+        {isLoading ? <LoadingScreen />  :
+        <>
+          <div className='main-content' id='main-content'>
+              <div className='main-header' onClick={() => setToggle(false)}>
+                <div className='row'>
+                  <div className='col-lg-10 heading'>
+                    <Header />
+                  </div>
+                  <div className='col-lg-2 option'>
+                    <div class="dropdown">
+                      <button class="btn btn-sm dropbtn"><HiDotsHorizontal /></button>
+                      <ul class="dropdown-content">
+                        <li onClick={() => setLocale(LOCALES.ENGLISH)}>English</li>
+                        <li onClick={() => setLocale(LOCALES.GUJARATI)}>Gujarati</li>
+                        <li onClick={() => setLocale(LOCALES.HINDI)}>Hindi</li>
+                      </ul>
                     </div>
-                  </React.Fragment>
-                  )
-                  : <p id='NoData'>No Data</p>}
+                  </div>  
+                </div>
+                
               </div>
-            </div>
-        </div>
-        <div className='footer' onClick={(e) => handleViewOrder(e)}>
-          <p>View Basket</p>
-          <p>£ {total}/ {quantity} Items</p>
-        </div>
-      </> }
-        {toggle
-          ? <>
-            <div className='pop-up'>
-              <div className='pop-up-header row'>
-                <h1 className='col-lg-9 col-md-9 col-sm-9 col-xs-9'>
-                  {popUpDetails.name}
-                </h1>
-                <button onClick={() => setToggle(false)} className='btn close col-lg-3 col-md-3 col-sm-3 col-xs-3'>X</button>
-              </div>
-                {/* <Variants variants={variants} setSizeData={setSizeData} /> */}
-                {variants
-                  ? <>
-                      <h1>Size</h1>
-                      <div className='variants'>
-                      {variants.map((data, index) => {
-                      return (
+              <div className='inner-content'>
+                <div className='categories' onClick={() => setToggle(false)}>
+                  {categories?.map((data, index) => {
+                    return (
                       <React.Fragment key={index}>
-                          <div className={isSizeActive === variants[index] ? 'inner-content row active' : 'inner-content row'} onClick={(e) => handleSizeData(data)}>
-                            <span className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>{data.name}</span>
-                            <span className='col-lg-6 col-md-6 col-sm-6 col-xs-6 size-price'>£ {data.price}</span>
-                          </div>
+                        {data.parent === null ? <button className={isActive === categories[index].id ? 'btn btn-sm active' : 'btn btn-sm'} onClick={(e) => handleClick(data)}>{data.name}</button> : ''}
                       </React.Fragment>
-                      )
-                      })}
+                    )
+                  })}
+                </div>
+                <div className='sub-category' onClick={() => setToggle(false)}>
+                  {filterCategory.length !== 0
+                    ? filterCategory?.map((data, index) => <React.Fragment key={index}>
+                      <button className={isProductActive === filterCategory[index].id ? 'btn btn-sm active' : 'btn btn-sm'} onClick={(e) => handleSubCategory(data)}>{data.name}</button>
+                    </React.Fragment>
+                    )
+                    : <p id='loading'>Loading...</p>}
+                </div>
+                <div className='menu'>
+                  {filterProduct.length !== 0
+                    ? filterProduct.map((data, index) => <React.Fragment key={index}>
+                      <div className='menu-item' onClick={(e) => handleMenu(data)}>
+                        <div className='item-content'>
+                          <h1>{data.name}</h1>
+                          <p>{data.description}</p>
+                        </div>
+                        <div className='item-price'>
+                          <p>£{data.price}</p>
+                        </div>
                       </div>
-                  </>
-                  : <></>}
-                {extra
-                  ? <>
-                      <h1 className='mt-3'>Select Options</h1>
-                      <div className='extra mt-2'>
-                        {extra.map((data, index) => {
-                          return (
-                            <React.Fragment key={index}>
-                              <label className='inner-content row' id={index}>
-                                <span className='col-lg-9 col-md-9 col-sm-9 col-xs-9'>{data.name} (+ £ {data.price})</span>
-                                <div className='col-lg-3 col-md-3 col-sm-3 col-xs-3 checkbox-list'>
-                                  <input className='form-check-input' value={data} type='checkbox' onClick={(e) => handleOptionData(e, data, index)} />
-                                </div>
-                              </label>
-                            </React.Fragment>
-                          )
-                        })}
-                      </div>
-                    </>
-                  : <></>}
-              <div className='button-controls mt-4'>
-                <button className='btn' onClick={(e) => handleDecrement(e)}>-</button>
-                <span className='form-control'>{quantity}</span>
-                <button className='btn' onClick={() => setQuantity(quantity + 1)}>+</button>
+                    </React.Fragment>
+                    )
+                    : <p id='NoData'>No Data</p>}
+                </div>
               </div>
-              <button className='addOrder mt-3 btn' onClick={() => handlecart(sizeData, popUpDetails, optionData, name, filterProduct, quantity)}>Add to Order</button>
-            </div>
-            </>
-          : ''}
-    </div>
+          </div>
+          <div className='footer' onClick={(e) => handleViewOrder(e)}>
+            {/* <p>View Basket</p> */}
+            {/* <FormattedMessage id='viewBasket' /> */}
+            <p>{translate('viewBasket')}</p>
+            <p>£ {total}/ {quantity} {translate('items')}</p>
+          </div>
+        </> }
+          {toggle
+            ? <>
+              <div className='pop-up'>
+                <div className='pop-up-header row'>
+                  <h1 className='col-lg-9 col-md-9 col-sm-9 col-xs-9'>
+                    {popUpDetails.name}
+                  </h1>
+                  <button onClick={() => setToggle(false)} className='btn close col-lg-3 col-md-3 col-sm-3 col-xs-3'>X</button>
+                </div>
+                  {/* <Variants variants={variants} setSizeData={setSizeData} /> */}
+                  {variants
+                    ? <>
+                        <h1>{translate('size')}</h1>
+                        <div className='variants'>
+                        {variants.map((data, index) => {
+                        return (
+                        <React.Fragment key={index}>
+                            <div className={isSizeActive === variants[index] ? 'inner-content row active' : 'inner-content row'} onClick={(e) => handleSizeData(data)}>
+                              <span className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>{data.name}</span>
+                              <span className='col-lg-6 col-md-6 col-sm-6 col-xs-6 size-price'>£ {data.price}</span>
+                            </div>
+                        </React.Fragment>
+                        )
+                        })}
+                        </div>
+                    </>
+                    : <></>}
+                  {extra
+                    ? <>
+                        <h1 className='mt-3'>{translate('selectOptions')}</h1>
+                        <div className='extra mt-2'>
+                          {extra.map((data, index) => {
+                            return (
+                              <React.Fragment key={index}>
+                                <label className='inner-content row' id={index}>
+                                  <span className='col-lg-9 col-md-9 col-sm-9 col-xs-9'>{data.name} (+ £ {data.price})</span>
+                                  <div className='col-lg-3 col-md-3 col-sm-3 col-xs-3 checkbox-list'>
+                                    <input className='form-check-input' value={data} type='checkbox' onClick={(e) => handleOptionData(e, data, index)} />
+                                  </div>
+                                </label>
+                              </React.Fragment>
+                            )
+                          })}
+                        </div>
+                      </>
+                    : <></>}
+                <div className='button-controls mt-4'>
+                  <button className='btn' onClick={(e) => handleDecrement(e)}>-</button>
+                  <span className='form-control'>{quantity}</span>
+                  <button className='btn' onClick={() => setQuantity(quantity + 1)}>+</button>
+                </div>
+                <button className='addOrder mt-3 btn' onClick={() => handlecart(sizeData, popUpDetails, optionData, name, filterProduct, quantity)}>{translate('addToOrder')}</button>
+              </div>
+              </>
+            : ''}
+      </div>
+    </I18NProvider>
   )
 }
