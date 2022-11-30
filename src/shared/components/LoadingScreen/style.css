@@ -1,0 +1,9 @@
+
+.loading-screen{
+    width: 100% !important;
+    height: 100% !important;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
