@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import MainContent from './pages/MainContent'
 import Checkout from './pages/Checkout'
 import LoadingScreen from './shared/components/LoadingScreen'
+import DropDown from './shared/components/DropDown'
 
 function App () {
   return (
@@ -14,6 +15,7 @@ function App () {
           <Route path='/' element={<MainContent />}/>
           <Route path='/loading' element={<LoadingScreen />} />
           <Route path='/checkout' element={<Checkout />} />
+          <Route path='/checkout/option' element={<DropDown />} />
         </Routes>
       </Router>
     </div>
