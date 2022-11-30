@@ -22,6 +22,12 @@
     flex-direction: column;
     width: 100%;
     padding: 10px;
+    align-items: none !important;
+    justify-content: none !important;
+}
+
+.main-header{
+    display: block !important;
 }
 
 .main-content .inner-content .categories{

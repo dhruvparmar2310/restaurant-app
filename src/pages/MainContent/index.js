@@ -8,6 +8,7 @@ import MainApi from '../../shared/utils/api'
 
 // import action
 import { getCategory, getProduct, setCart } from '../../states/Action'
+import LoadingScreen from '../../shared/components/LoadingScreen'
 
 export default function MainContent () {
   const [name, setName] = useState([])
@@ -38,6 +39,7 @@ export default function MainContent () {
   const [isActive, setIsActive] = useState(id)
   const [isProductActive, setIsProductActive] = useState(productId)
   const [isSizeActive, setIsSizeActive] = useState(sizeData)
+  const [isLoading, setIsLoading] = useState(false)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -51,11 +53,14 @@ export default function MainContent () {
   const cartData = useSelector((state) => state.allCart.cart)
 
   const getCategories = async () => {
+    setIsLoading(true)
     const response = await MainApi.get('/categories')
       .then((res) => {
         setCategories(res.data)
       }).catch((err) => {
         console.log('err :>> ', err)
+      }).finally(() => {
+        setIsLoading(false)
       })
   }
 
@@ -218,52 +223,53 @@ export default function MainContent () {
 
   return (
     <div className='main'>
-      <div className='main-content' id='main-content'>
-        <div onClick={() => setToggle(false)}>
-          <Header />
-        </div>
-        <div className='inner-content'>
-            <div className='categories' onClick={() => setToggle(false)}>
+      {isLoading ? <LoadingScreen />  :
+      <>
+        <div className='main-content' id='main-content'>
+            <div className='main-header' onClick={() => setToggle(false)}>
+              <Header />
+            </div>
+            <div className='inner-content'>
+              <div className='categories' onClick={() => setToggle(false)}>
                 {categories?.map((data, index) => {
                   return (
                     <React.Fragment key={index}>
-                        {data.parent === null ? <button className={isActive === categories[index].id ? 'btn btn-sm active' : 'btn btn-sm'} onClick={(e) => handleClick(data)}>{data.name}</button> : ''}
+                      {data.parent === null ? <button className={isActive === categories[index].id ? 'btn btn-sm active' : 'btn btn-sm'} onClick={(e) => handleClick(data)}>{data.name}</button> : ''}
                     </React.Fragment>
                   )
                 })}
-            </div>
-            <div className='sub-category' onClick={() => setToggle(false)}>
-              {filterCategory.length !== 0
-                ? filterCategory?.map((data, index) =>
-                  <React.Fragment key={index}>
-                      <button className={isProductActive === filterCategory[index].id ? 'btn btn-sm active' : 'btn btn-sm'} onClick={(e) => handleSubCategory(data)}>{data.name}</button>
+              </div>
+              <div className='sub-category' onClick={() => setToggle(false)}>
+                {filterCategory.length !== 0
+                  ? filterCategory?.map((data, index) => <React.Fragment key={index}>
+                    <button className={isProductActive === filterCategory[index].id ? 'btn btn-sm active' : 'btn btn-sm'} onClick={(e) => handleSubCategory(data)}>{data.name}</button>
                   </React.Fragment>
-                )
-              : <p id='loading'>Loading...</p>}
-            </div>
-            <div className='menu'>
-              {filterProduct.length !== 0
-                ? filterProduct.map((data, index) =>
-                <React.Fragment key={index}>
-                  <div className='menu-item' onClick={(e) => handleMenu(data)}>
-                    <div className='item-content'>
-                      <h1>{data.name}</h1>
-                      <p>{data.description}</p>
+                  )
+                  : <p id='loading'>Loading...</p>}
+              </div>
+              <div className='menu'>
+                {filterProduct.length !== 0
+                  ? filterProduct.map((data, index) => <React.Fragment key={index}>
+                    <div className='menu-item' onClick={(e) => handleMenu(data)}>
+                      <div className='item-content'>
+                        <h1>{data.name}</h1>
+                        <p>{data.description}</p>
+                      </div>
+                      <div className='item-price'>
+                        <p>£{data.price}</p>
+                      </div>
                     </div>
-                    <div className='item-price'>
-                      <p>£{data.price}</p>
-                    </div>
-                  </div>
-                </React.Fragment>
-                )
-              : <p id='NoData'>No Data</p>}
+                  </React.Fragment>
+                  )
+                  : <p id='NoData'>No Data</p>}
+              </div>
             </div>
         </div>
-      </div>
-      <div className='footer' onClick={(e) => handleViewOrder(e)}>
-        <p>View Basket</p>
-        <p>£ {total}/ {quantity} Items</p>
-      </div>
+        <div className='footer' onClick={(e) => handleViewOrder(e)}>
+          <p>View Basket</p>
+          <p>£ {total}/ {quantity} Items</p>
+        </div>
+      </> }
         {toggle
           ? <>
             <div className='pop-up'>
