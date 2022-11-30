@@ -203,7 +203,7 @@ export default function MainContent () {
     const id = index
 
     if (checked) {
-      setOptionData([data])
+      setOptionData((a) => [...a, data])
     } else {
       const filter = optionData.filter((e) => e !== data)
       setOptionData(filter)
