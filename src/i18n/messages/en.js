@@ -12,9 +12,10 @@ const en = {
       "items":"Item(s)",
       "confirmOrder":"Confirm Order",
       "checkout": "Checkout",
+      "checkoutAddress": "Kempston Hammers Sports & Social Club",
       "addNotes": "Add Notes",
       "tableNumber": "Table Number",
-      "confirmMessage": "By placing this order you agree that you are present in Kings Arms and Over 18 years old",
+      "confirmMessage": "By placing this order you{break}agree that you are present in{break}Kings Arms and over 18 years{break}old.",
       "cancel":"Cancel",
       "placeOrder":"Place Order"
     }
