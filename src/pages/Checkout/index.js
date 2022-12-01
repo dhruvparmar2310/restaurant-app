@@ -8,6 +8,8 @@ import { TbCurrencyPound } from 'react-icons/tb'
 import thumb from '../../assets/images/thumb.png'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import DropDown from '../../shared/components/DropDown'
+import translate from '../../i18n/translate'
 
 export default function Checkout () {
   const [toggle, setToggle] = useState(false)
@@ -63,16 +65,16 @@ export default function Checkout () {
         <div className='row mt-2'>
           <div className='col-lg-3 col-md-3 col-sm-3 col-xs-3 goBack' onClick={(e) => handleGoBack(e)}><MdArrowBackIosNew /></div>
           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6 header'>
-            <h1>Checkout</h1>
+            <h1>{translate('checkout')}</h1>
           </div>
-          <div className='col-lg-3 col-md-3 col-sm-3 col-xs-3 option'><HiDotsHorizontal /></div>
+          <div className='col-lg-3 col-md-3 col-sm-3 col-xs-3 option'><button className='btn btn-sm'><HiDotsHorizontal /></button></div>
         </div>
         <div className='hotel row'>
           <div className='col-lg-12 hotel-name'>
-            <h5>Kempston Hammers Sports & Social Club</h5>
+            <h5>{translate('checkoutAddress')}</h5>
           </div>
           <div className='col-lg-12 hotel-address'>
-          <p>134 High Street, Kempston, Bedford, <br/>Bedfordshine, MK42 7BN</p>
+          <p>{translate('restaurantAddress', {break: <br />})}</p>
           </div>
         </div>
         <div className='row product-details'>
@@ -98,14 +100,14 @@ export default function Checkout () {
           ? <>
               <div className='pop-left'>
                 <div className='pop-left-header'>
-                  <h1>Confirm Order</h1>
+                  <h1>{translate('confirmOrder')}</h1>
                   <img src={thumb} className='img-fluid' alt='' />
                 </div>
                 <div className='content'>
-                  <p>By placing this order you<br/>agree that you are present in<br/>Kings Arms and over 18 years<br/>old.</p>
+                  <p>{translate('confirmMessage', {break: <br />})}</p>
                   <div className='button-controls'>
-                    <button className='btn btnCancel' onClick={() => setToggle(false)}>Cancel</button>
-                    <button className='btn btnPlaceOrder' onClick={(e) => handlePlaceOrder(e)}>Place Order</button>
+                    <button className='btn btnCancel' onClick={() => setToggle(false)}>{translate('cancel')}</button>
+                    <button className='btn btnPlaceOrder' onClick={(e) => handlePlaceOrder(e)}>{translate('placeOrder')}</button>
                   </div>
                 </div>
               </div>
@@ -113,13 +115,13 @@ export default function Checkout () {
           : ''}
         <span className='underline'></span>
         <div className='addNotes'>
-          <h5>Add notes:</h5>
+          <h5>{translate('addNotes')}:</h5>
           <textarea className='form-control' rows={5}></textarea>
         </div>
         <span className='underline'></span>
         <div className='table row'>
           <div className='col-lg-9 table-name'>
-            <h5>Table Number</h5>
+            <h5>{translate('tableNumber')}</h5>
           </div>
           <div className='col-lg-3 table-number'>
             <button className='btn'>{tableNumber}</button>
@@ -127,8 +129,8 @@ export default function Checkout () {
         </div>
       </div>
       <div className='footer' onClick={(e) => ConfirmOrder(e)}>
-        <p>Confirm Order</p>
-        <p><TbCurrencyPound /> {totalPrice}/ {totalItem} Items</p>
+        <p>{translate('confirmOrder')}</p>
+        <p><TbCurrencyPound /> {totalPrice}/ {totalItem} {translate('items')}</p>
       </div>
     </div>
   )

@@ -85,6 +85,16 @@
 .checkout-main .main-content .option{
     width: 10%;
 }
+
+.checkout-main .main-content .option button{
+    margin: 0;
+    padding: 0;
+}
+
+.checkout-main .main-content .option button:focus{
+    display: none;
+}
+
 .checkout-main .main-content .header{
     width: 80%;
 }

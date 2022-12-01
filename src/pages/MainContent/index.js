@@ -47,9 +47,6 @@ export default function MainContent () {
   const [isSizeActive, setIsSizeActive] = useState(sizeData)
   const [isLoading, setIsLoading] = useState(false)
 
-  // state for internationalization
-  const [locale, setLocale] = useState(LOCALES.ENGLISH)
-
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -229,30 +226,14 @@ export default function MainContent () {
     const prevQty = data
     setToggle(false)
   }
-
   return (
-    <I18NProvider locale={locale}>
+    
       <div className='main'>
         {isLoading ? <LoadingScreen />  :
         <>
           <div className='main-content' id='main-content'>
               <div className='main-header' onClick={() => setToggle(false)}>
-                <div className='row'>
-                  <div className='col-lg-10 heading'>
-                    <Header />
-                  </div>
-                  <div className='col-lg-2 option'>
-                    <div class="dropdown">
-                      <button class="btn btn-sm dropbtn"><HiDotsHorizontal /></button>
-                      <ul class="dropdown-content">
-                        <li onClick={() => setLocale(LOCALES.ENGLISH)}>English</li>
-                        <li onClick={() => setLocale(LOCALES.GUJARATI)}>Gujarati</li>
-                        <li onClick={() => setLocale(LOCALES.HINDI)}>Hindi</li>
-                      </ul>
-                    </div>
-                  </div>  
-                </div>
-                
+                <Header />
               </div>
               <div className='inner-content'>
                 <div className='categories' onClick={() => setToggle(false)}>
@@ -353,6 +334,5 @@ export default function MainContent () {
               </>
             : ''}
       </div>
-    </I18NProvider>
   )
 }
