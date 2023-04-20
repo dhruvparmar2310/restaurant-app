@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const MainApi = axios.create({
-  baseURL: 'https://6364ac837b209ece0f4b06db.mockapi.io'
+  baseURL: 'https://63fee157370fe830d9da61bb.mockapi.io'
 })
 
 export default MainApi
